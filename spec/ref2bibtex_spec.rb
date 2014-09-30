@@ -30,6 +30,10 @@ describe Ref2bibtex do
     specify 'Ref2bibtex.get_doi() takes a full citation and returns a string' do
       expect(Ref2bibtex.get_doi(CITATIONS[:first])).to eq('http://dx.doi.org/10.3897/zookeys.20.205')
     end
+
+    specify 'a citation that can not be resolved returns false' do
+      expect(Ref2bibtex.get_doi(CITATIONS[:fifth])).to eq(false)
+    end
   end
 
   context '#get_bibtex' do
@@ -41,5 +45,8 @@ describe Ref2bibtex do
     end
   end
 
+  specify "a citation that can not be resolved returns false" do
+    expect(Ref2bibtex.get(CITATIONS[:fifth])).to eq(false)
+  end
 
 end 

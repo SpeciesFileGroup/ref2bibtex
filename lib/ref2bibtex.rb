@@ -21,6 +21,7 @@ module Ref2bibtex
 
   # Pass a String doi get a bibtex formatted string back 
   def self.get_bibtex(doi)
+    return false if !doi
     response = Ref2bibtex.request(URI(doi), headers: {'Accept' => 'application/x-bibtex' }, protocol: 'GET', process_response_as: 'text') 
   end
 
@@ -33,7 +34,11 @@ module Ref2bibtex
     end
     
     response = Ref2bibtex.request(payload: citation) 
-    response['results'].first['doi']
+    if response['results'][0]['match']
+      response['results'].first['doi']
+    else
+      false
+    end
   end
 
   # Pass a citation, get a String in bibtex back
