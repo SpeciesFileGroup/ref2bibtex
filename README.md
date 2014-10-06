@@ -44,10 +44,10 @@ The code is dumb, it takes the first.
 acknowledgements
 ================
 
-The Crossref API, and John Hill for his Python version.
+The Crossref API, and Jon Hill, University of York, for his Python version and bringing up the approach.
 
 license
 =======
 
-NCSA, UI flavour.
+NCSA, UI flavor. [http://opensource.org/licenses/NCSA]
 
