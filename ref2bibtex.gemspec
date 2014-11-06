@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Matt Yoder"]
   spec.email         = ["diapriid@gmail.com"]
   spec.summary       = %q{Pass a full citation, get the bibtex back, that's all.}
-  spec.description   = %q{Ok, maybe a bit more, you can have the DOI too.}
+  spec.description   = %q{Ok, maybe a bit more, you can pass a DOI and get the bibtex string back too.}
   spec.homepage      = "http://github.com/SpeciesFileGroup/ref2bibtex"
   spec.license       = "MIT"
 

@@ -22,7 +22,9 @@ module Ref2bibtex
   # Pass a String doi get a bibtex formatted string back 
   def self.get_bibtex(doi)
     return false if !doi
-    response = Ref2bibtex.request(URI(doi), headers: {'Accept' => 'application/x-bibtex' }, protocol: 'GET', process_response_as: 'text') 
+    uri = URI(doi)
+    return false if uri.class == URI::Generic
+    response = Ref2bibtex.request(uri, headers: {'Accept' => 'application/x-bibtex' }, protocol: 'GET', process_response_as: 'text') 
   end
 
   # Pass a String citation, get a doi back

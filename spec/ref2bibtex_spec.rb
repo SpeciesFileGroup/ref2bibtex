@@ -34,6 +34,10 @@ describe Ref2bibtex do
     specify 'a citation that can not be resolved returns false' do
       expect(Ref2bibtex.get_doi(CITATIONS[:fifth])).to eq(false)
     end
+
+    specify 'a badly formed DOI returns false' do
+      expect(Ref2bibtex.get_doi('asfas')).to eq(false)
+    end
   end
 
   context '#get_bibtex' do
@@ -42,6 +46,10 @@ describe Ref2bibtex do
       expect(response).to match(/author\s=/)
       expect(response).to match(/title\s=/)
       expect(response).to match(/year\s=\s2009/)
+    end
+
+    specify 'a bad doi returns false' do
+      expect(Ref2bibtex.get_bibtex('asfasf')).to eq(false)
     end
   end
 
