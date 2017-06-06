@@ -16,8 +16,8 @@ PLATFORMS
 DEPENDENCIES
   awesome_print
   bundler (~> 1.6)
-  byebug
-  rake
+  byebug (~> 9.0)
+  rake (~> 12.0)
   ref2bibtex!
 
 BUNDLED WITH
