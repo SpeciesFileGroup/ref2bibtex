@@ -31,8 +31,8 @@ describe Ref2bibtex do
       expect(Ref2bibtex.get_doi(CITATIONS[:first])).to eq('http://dx.doi.org/10.3897/zookeys.20.205')
     end
 
-    specify 'a citation that can not be resolved returns false' do
-      expect(Ref2bibtex.get_doi(CITATIONS[:fifth])).to eq(false)
+    specify 'a citation that can not be resolved returns false from #get_doi' do
+      expect(Ref2bibtex.get_doi(CITATIONS[:eighth])).to eq(false)
     end
 
     specify 'a badly formed DOI returns false' do
@@ -40,7 +40,7 @@ describe Ref2bibtex do
     end
   end
 
-  context '#get_bibtex' do
+  context '#get_bibtex' do  
     let(:response) { Ref2bibtex.get_bibtex('http://dx.doi.org/10.3897/zookeys.20.205')}
     specify 'Ref2bibtex.get_bibtex() takes a full citation and returns bibtex' do
       expect(response).to match(/author\s=/)
@@ -53,8 +53,29 @@ describe Ref2bibtex do
     end
   end
 
-  specify "a citation that can not be resolved returns false" do
-    expect(Ref2bibtex.get(CITATIONS[:fifth])).to eq(false)
+  specify "a citation that can not be resolved returns false from #get" do
+    expect(Ref2bibtex.get(CITATIONS[:eighth])).to eq(false)
+  end
+
+  context 'score' do
+
+    specify 'can be returned with .get_score' do
+      expect(Ref2bibtex.get_score(CITATIONS[:first])).to be > 0
+    end
+
+    context 'interpretation' do
+
+      let(:score_good) { Ref2bibtex.get_score(CITATIONS[:second]) }
+      let(:score_bad) { Ref2bibtex.get_score(CITATIONS[:seventh]) }
+
+
+
+      specify 'mangled text is worse than good text' do
+        expect(score_good > score_bad).to be_truthy
+      end
+
+    end
+
   end
 
 end 

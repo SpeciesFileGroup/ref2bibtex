@@ -7,6 +7,7 @@ require 'net/http'
 
 module Ref2bibtex
 
+  # By default sorts by score
   CROSSREF_URI = URI('http://search.crossref.org/links')
 
   # Parse the response into json
@@ -28,24 +29,31 @@ module Ref2bibtex
   end
 
   # Pass a String citation, get a doi back
-  def self.get_doi(citation)
-    if citation.class == String
-      citation = [citation]
-    elsif citation.class != Array
-      raise
-    end
-    
+  def self.get_doi(citation, cuttoff: 50)
+    citation = validate_query(citation)
     response = Ref2bibtex.request(payload: citation) 
-    if response['results'][0]['match']
-      response['results'].first['doi']
-    else
-      false
-    end
+
+    return false if !response['results'][0]['match']
+    response['results'][0]['doi']
+  end
+
+  def self.get_score(citation)
+    citation = validate_query(citation)
+    response = Ref2bibtex.request(payload: citation) 
+    return false if !response['results'][0]['match']
+    response['results'][0]['score']
+  end
+
+  def self.validate_query(citation)
+    return [citation] if citation.kind_of?(String) && citation.length > 0
+    raise 'citation is not String or Array' if !citation.kind_of?(Array) 
+    raise 'citation in array is empty' if citation.empty? || citation.select{|a| a.length == 0}.size > 0
+    citation
   end
 
   # Pass a citation, get a String in bibtex back
   def self.citation2bibtex(citation)
-    get_bibtex( get_doi(citation) )
+    get_bibtex(get_doi(citation) )
   end
 
   class << self
@@ -70,18 +78,20 @@ module Ref2bibtex
       request = Net::HTTP::Get.new(url, initheader = headers) 
     end
 
-    response = Net::HTTP.start(request.uri.hostname, request.uri.port) do |http|
+    response = Net::HTTP.start(request.uri.hostname, request.uri.port, use_ssl: request.uri.scheme == 'https') do |http|
       request.body = data 
       http.request(request)
     end
 
     case response
-    when Net::HTTPSuccess then
+    when Net::HTTPSuccess 
       response = response
-    when Net::HTTPRedirection then
+    when Net::HTTPRedirection 
+
       url = URI(response['location'])
       request = Net::HTTP::Get.new(url, initheader = {'Accept' => 'application/x-bibtex'}) 
-      response = Net::HTTP.start(request.uri.hostname, request.uri.port) do |http|
+
+      response = Net::HTTP.start(request.uri.hostname, request.uri.port, use_ssl: request.uri.scheme == 'https') do |http|
         http.request(request) 
       end
     else
@@ -94,8 +104,9 @@ module Ref2bibtex
     when 'json'
       parse_json(response.body)
     else
-      raise
+      raise 'response process type not provided'
     end
+
   end
 
 end
