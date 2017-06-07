@@ -43,7 +43,7 @@ If you want a score:
 ```
 
 Uses a cutoff against score, below cutoff returns false, set the cutoff:
-```
+```ruby
 
   Ref2bibtex.cutoff            # => 50 
   Ref2bibtex.cutoff = 10       # => 10
