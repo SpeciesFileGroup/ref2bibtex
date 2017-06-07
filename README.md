@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/SpeciesFileGroup/ref2bibtex.svg?branch=master)](https://travis-ci.org/SpeciesFileGroup/ref2bibtex)
+
 # ref2bibtex
 
 An (almost) single purpose gem wrapping Crossref's API.  Pass it a full reference string, get back bibtex.
