@@ -2,7 +2,7 @@
 
 # ref2bibtex
 
-An (almost) single purpose gem wrapping Crossref's API.  Pass it a full reference string, get back bibtex.
+An (almost) single purpose gem wrapping Crossref's API.  Pass it a full reference string, get back BibTeX.  Pass it a DOI, get BibTeX.
 
 # usage
 
@@ -62,5 +62,5 @@ The Crossref API. Jon Hill, University of York, for his Python version and bring
 
 # license
 
-NCSA, UI flavor. [http://opensource.org/licenses/NCSA]
+[NCSA, UI flavor](http://opensource.org/licenses/NCSA)
 
