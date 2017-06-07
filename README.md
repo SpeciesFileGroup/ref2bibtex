@@ -42,10 +42,19 @@ If you want a score:
 
 ```
 
+Uses a cutoff against score, below cutoff returns false, set the cutoff:
+```
+
+  Ref2bibtex.cutoff            # => 50 
+  Ref2bibtex.cutoff = 10       # => 10
+  Ref2bibtex.reset_cutoff      # => 50 
+
+``` 
+
 # faq
 
 ## What if there are multiple results?
-The code is dumb, it takes the first.
+The code is dumb, it takes the first. You could use the internals to get more results.
 
 # acknowledgements
 
