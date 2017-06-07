@@ -10,6 +10,22 @@ module Ref2bibtex
   # By default sorts by score
   CROSSREF_URI = URI('http://search.crossref.org/links')
 
+  DEFAULT_CUTOFF = 50
+
+  @@cutoff = DEFAULT_CUTOFF
+
+  def self.cutoff
+    @@cutoff
+  end
+
+  def self.cutoff=(value)
+    @@cutoff = value
+  end
+
+  def self.reset_cutoff
+    @@cutoff = DEFAULT_CUTOFF
+  end
+
   # Parse the response into json
   def self.parse_json(string)
     begin
@@ -27,16 +43,19 @@ module Ref2bibtex
     return false if uri.class == URI::Generic
     response = Ref2bibtex.request(uri, headers: {'Accept' => 'application/x-bibtex' }, protocol: 'GET', process_response_as: 'text') 
   end
-
-  # Pass a String citation, get a doi back
-  def self.get_doi(citation, cuttoff: 50)
+ 
+  # Pass a String citation, get a DOI back
+  def self.get_doi(citation)
     citation = validate_query(citation)
     response = Ref2bibtex.request(payload: citation) 
 
     return false if !response['results'][0]['match']
+    return false if response['results'][0]['score'] < @@cutoff
+
     response['results'][0]['doi']
   end
 
+  # Pass a String citation, get a score back
   def self.get_score(citation)
     citation = validate_query(citation)
     response = Ref2bibtex.request(payload: citation) 
@@ -51,7 +70,7 @@ module Ref2bibtex
     citation
   end
 
-  # Pass a citation, get a String in bibtex back
+  # Pass a citation, get a String in BibTeX back
   def self.citation2bibtex(citation)
     get_bibtex(get_doi(citation) )
   end
@@ -62,24 +81,12 @@ module Ref2bibtex
 
   def self.request(url = CROSSREF_URI, payload: nil, headers: {'content-type' => 'application/json' }, protocol: 'POST', process_response_as: 'json', redirect_limit: 10)
     raise 'Infinite redirect?' if redirect_limit == 0
-    data = nil
-    if protocol == 'POST'
-      if payload.nil?
-        payload = {}
-      end
-      data = JSON.generate(payload) # Json.new(payload) # utf-8 encoding?
-    else
-      data = nil
-    end
 
-    if protocol == 'POST'
-      request = Net::HTTP::Post.new(url, initheader = headers) 
-    elsif protocol == 'GET'
-      request = Net::HTTP::Get.new(url, initheader = headers) 
-    end
+    body = request_body(protocol, payload)
+    request = new_request(protocol, url, headers)
 
     response = Net::HTTP.start(request.uri.hostname, request.uri.port, use_ssl: request.uri.scheme == 'https') do |http|
-      request.body = data 
+      request.body = body 
       http.request(request)
     end
 
@@ -98,7 +105,36 @@ module Ref2bibtex
       response = response.value
     end
 
-    case process_response_as
+     process_response(response, process_response_as)
+  end
+
+  protected
+
+  def self.interpret_response(response)
+  end
+
+  def self.request_body(protocol, payload)
+    if protocol == 'POST'
+      payload = {} if payload.nil?
+      JSON.generate(payload) # Json.new(payload) # utf-8 encoding?
+    else
+      nil
+    end
+  end
+
+  def self.new_request(protocol, url, headers)
+    case protocol
+    when 'POST'
+      Net::HTTP::Post.new(url, initheader = headers) 
+    when 'GET'
+      Net::HTTP::Get.new(url, initheader = headers) 
+    else
+      raise 'invalid protocol'
+    end
+  end
+
+  def self.process_response(response, as)
+    case as
     when 'text' 
       response.body
     when 'json'
@@ -106,7 +142,6 @@ module Ref2bibtex
     else
       raise 'response process type not provided'
     end
-
   end
 
 end

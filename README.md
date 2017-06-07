@@ -1,10 +1,8 @@
-ref2bibtex
-==========
+# ref2bibtex
 
-A single purpose gem wrapping Crossref's API.  Pass it a full reference string, get back bibtex.
+An (almost) single purpose gem wrapping Crossref's API.  Pass it a full reference string, get back bibtex.
 
-usage
-=====
+# usage
 
 Use citation2bibtex (aliased _get_):
 
@@ -34,20 +32,24 @@ If you have the doi:
 
 ```
 
-faq
-===
+If you want a score: 
 
-What if there are multiple results?
------------------------------------
+```ruby
+
+  Ref2bibtex.get_score('E. Ven. 1337. Fake articles. Journal Get Scores. Hm:mm') # => 23.688715
+
+```
+
+# faq
+
+## What if there are multiple results?
 The code is dumb, it takes the first.
 
-acknowledgements
-================
+# acknowledgements
 
-The Crossref API, and Jon Hill, University of York, for his Python version and bringing up the approach.
+The Crossref API. Jon Hill, University of York, for his Python version and bringing up the approach.
 
-license
-=======
+# license
 
 NCSA, UI flavor. [http://opensource.org/licenses/NCSA]
 
