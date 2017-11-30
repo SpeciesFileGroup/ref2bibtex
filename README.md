@@ -9,13 +9,13 @@ An (almost) single purpose gem wrapping Crossref's API.  Pass it a full referenc
 
 Be polite (https://github.com/CrossRef/rest-api-doc#etiquette).  Provide a email as per CrossRef recommendations. Do this by:
 
-1) Add it to the file ~/.ref2bibtex_user_email.
+1) Add it to the file `~/.ref2bibtex_user_email`.
 
 2) Add it to the file .env in the root of your application:
 
-REF2BIBTEX_USER_EMAIL=user@example.com
+    REF2BIBTEX_USER_EMAIL=user@example.com
 
-3) Set REF2BIBTEX_USER_EMAIL in your shell profile.
+3) Set `REF2BIBTEX_USER_EMAIL` in your shell profile.
 
 If the email is set in multiple places priority is reverse order listed here.
 
