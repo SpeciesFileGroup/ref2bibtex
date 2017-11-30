@@ -7,8 +7,18 @@ require 'net/http'
 
 module Ref2bibtex
 
+  USER_EMAIL_FILE_PATH = File.expand_path("~/.ref2bibtex_user_email")
+  key = nil
+  key = File.read(USER_EMAIL_FILE_PATH).strip if File.exists?(USER_EMAIL_FILE_PATH)
+  USER_EMAIL_FILE = key 
+  USER_EMAIL_ENV = ENV['REF2BIBTEX_USER_EMAIL'] 
+
+  USER_EMAIL = USER_EMAIL_FILE || USER_EMAIL_ENV || nil
+
+  warn "\n\n !! User email not set in ~/.ref2bibtex_user_email, .env, or ENV, you're not being a polite user! (https://github.com/CrossRef/rest-api-doc)!! \n\n"  if USER_EMAIL.nil? || USER_EMAIL == 'https%3A%2F%2Fgithub.com%2FSpeciesFileGroup%2Fref2bibtex'
+
   # By default sorts by score
-  CROSSREF_URI = URI('http://search.crossref.org/links')
+  CROSSREF_URI = URI("https://search.crossref.org/links?mailto=#{USER_EMAIL}")
 
   DEFAULT_CUTOFF = 50
 

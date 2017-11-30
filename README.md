@@ -1,10 +1,23 @@
 [![Build Status](https://travis-ci.org/SpeciesFileGroup/ref2bibtex.svg?branch=master)](https://travis-ci.org/SpeciesFileGroup/ref2bibtex)
+[![Dependency Status](https://gemnasium.com/badges/github.com/SpeciesFileGroup/ref2bibtex.svg)](https://gemnasium.com/github.com/SpeciesFileGroup/ref2bibtex)
 
 # ref2bibtex
 
-An (almost) single purpose gem wrapping Crossref's API.  Pass it a full reference string, get back BibTeX.  Pass it a DOI, get BibTeX.
+An (almost) single purpose gem wrapping Crossref's API.  Pass it a full reference string, get back BibTeX.  Pass it a DOI, get BibTeX.  Want something more complex? See [serrano](https://github.com/sckott/serrano).
 
 # usage
+
+Be polite (https://github.com/CrossRef/rest-api-doc#etiquette).  Provide a email as per CrossRef recommendations. Do this by:
+
+1) Add it to the file ~/.ref2bibtex_user_email.
+
+2) Add it to the file .env in the root of your application:
+
+REF2BIBTEX_USER_EMAIL=user@example.com
+
+3) Set REF2BIBTEX_USER_EMAIL in your shell profile.
+
+If the email is set in multiple places priority is reverse order listed here.
 
 Use citation2bibtex (aliased _get_):
 
