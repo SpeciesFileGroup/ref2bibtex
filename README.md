@@ -13,7 +13,7 @@ Be polite (https://github.com/CrossRef/rest-api-doc#etiquette).  Provide a email
 
 2) Add it to the file .env in the root of your application:
 
-    REF2BIBTEX_USER_EMAIL=user@example.com
+    `REF2BIBTEX_USER_EMAIL=user@example.com`
 
 3) Set `REF2BIBTEX_USER_EMAIL` in your shell profile.
 
