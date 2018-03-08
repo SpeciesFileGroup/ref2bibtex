@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ref2bibtex (0.2.1)
+    ref2bibtex (0.2.2)
 
 GEM
   remote: https://rubygems.org/
@@ -36,4 +36,4 @@ DEPENDENCIES
   rspec
 
 BUNDLED WITH
-   1.16.0
+   1.16.1
