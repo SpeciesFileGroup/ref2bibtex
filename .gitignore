@@ -35,5 +35,5 @@ build/
 
 *~
 *.swp
-idea/
+.idea/
 .DS_Store
