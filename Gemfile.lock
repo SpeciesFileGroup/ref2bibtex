@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ref2bibtex (0.2.2)
+    ref2bibtex (0.2.3)
       addressable (~> 2.5)
 
 GEM
