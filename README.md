@@ -1,5 +1,4 @@
 [![Build Status](https://travis-ci.org/SpeciesFileGroup/ref2bibtex.svg?branch=master)](https://travis-ci.org/SpeciesFileGroup/ref2bibtex)
-[![Dependency Status](https://gemnasium.com/badges/github.com/SpeciesFileGroup/ref2bibtex.svg)](https://gemnasium.com/github.com/SpeciesFileGroup/ref2bibtex)
 
 # ref2bibtex
 

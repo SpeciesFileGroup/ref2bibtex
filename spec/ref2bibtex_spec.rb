@@ -51,6 +51,12 @@ describe Ref2bibtex do
     specify 'a bad doi returns false' do
       expect(Ref2bibtex.get_bibtex('asfasf')).to eq(false)
     end
+
+    context 'random DOIs from the wild' do
+      specify '#1' do
+        expect(Ref2bibtex.get_bibtex('https://doi.org/10.1649/0010-065X(2001)055[0363:HHPANS]2.0.CO;2')).to be_truthy 
+      end
+    end
   end
 
   specify "a citation that can not be resolved returns false from .get" do

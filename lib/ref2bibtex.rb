@@ -4,6 +4,8 @@ raise "IMPORTANT:  gem requires ruby >= 2.1.0" unless recent_ruby
 require "ref2bibtex/version"
 require 'json'
 require 'net/http'
+require 'cgi'
+require "addressable/uri"
 
 module Ref2bibtex
 
@@ -47,8 +49,10 @@ module Ref2bibtex
   end
 
   # Pass a String doi get a bibtex formatted string back 
+  #
   def self.get_bibtex(doi)
     return false if !doi
+    doi = Addressable::URI.parse(doi).normalize.to_s
     uri = URI(doi)
     return false if uri.class == URI::Generic
     response = Ref2bibtex.request(uri, headers: {'Accept' => 'application/x-bibtex' }, protocol: 'GET', process_response_as: 'text') 
