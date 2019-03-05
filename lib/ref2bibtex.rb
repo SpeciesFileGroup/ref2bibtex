@@ -1,11 +1,13 @@
-recent_ruby = RUBY_VERSION >= '2.1.0'
-raise "IMPORTANT:  gem requires ruby >= 2.1.0" unless recent_ruby
+recent_ruby = RUBY_VERSION >= '2.3.0'
+raise "IMPORTANT:  gem requires ruby >= 2.3.0" unless recent_ruby
 
 require "ref2bibtex/version"
 require 'json'
 require 'net/http'
 require 'cgi'
-require "addressable/uri"
+require 'addressable/uri'
+
+# require 'serrano'
 
 module Ref2bibtex
 
@@ -48,33 +50,46 @@ module Ref2bibtex
     end
   end
 
-  # Pass a String doi get a bibtex formatted string back 
-  #
+  # @params doi [String]
+  # @return [String, false] 
   def self.get_bibtex(doi)
     return false if !doi
+
     doi = Addressable::URI.parse(doi).normalize.to_s
     uri = URI(doi)
     return false if uri.class == URI::Generic
-    response = Ref2bibtex.request(uri, headers: {'Accept' => 'application/x-bibtex' }, protocol: 'GET', process_response_as: 'text') 
+
+    # Serrano.content_negotiation(ids: doi).first
+
+    Ref2bibtex.request(uri, headers: {'Accept' => 'application/x-bibtex' }, protocol: 'GET', process_response_as: 'text') 
   end
- 
+
+  # @param citation [String] 
+  # @return [String, false]
   # Pass a String citation, get a DOI back
   def self.get_doi(citation)
     citation = validate_query(citation)
     response = Ref2bibtex.request(payload: citation) 
-
-    return false if !response['results'][0]['match']
+    return false unless has_match?(response) 
     return false if response['results'][0]['score'] < @@cutoff
-
     response['results'][0]['doi']
   end
 
+  # @param citation [String]
+  # @return [Float, -1.0
   # Pass a String citation, get a score back
   def self.get_score(citation)
     citation = validate_query(citation)
     response = Ref2bibtex.request(payload: citation) 
-    return false if !response['results'][0]['match']
-    response['results'][0]['score']
+    if has_match?(response)
+      response['results'].first['score']
+    else
+      -1.0
+    end
+  end
+
+  def self.has_match?(response)
+    response['query_ok'] && response['results']&.first['match']
   end
 
   def self.validate_query(citation)
@@ -116,10 +131,11 @@ module Ref2bibtex
         http.request(request) 
       end
     else
+
       response = response.value
     end
 
-     process_response(response, process_response_as)
+    process_response(response, process_response_as)
   end
 
   protected

@@ -1,8 +1,10 @@
 ---
 rvm:
-  - 2.3.3
+  - 2.5.1
 branches:
   only:
     - master
 install:
   - bundle install
+cache:
+  bundler: true
